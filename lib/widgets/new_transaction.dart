@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -16,13 +17,13 @@ class _NewTransactionState extends State<NewTransaction> {
   DateTime selectedDate;
 
   void submitData() {
-    if(amountController.text.isEmpty){
+    if (amountController.text.isEmpty) {
       return;
     }
     final enteredTitle = titleController.text;
     final enteredAmount = double.parse(amountController.text);
 
-    if (enteredTitle.isEmpty || enteredAmount <= 0 ||selectedDate ==null) {
+    if (enteredTitle.isEmpty || enteredAmount <= 0 || selectedDate == null) {
       return;
     }
 
@@ -41,14 +42,14 @@ class _NewTransactionState extends State<NewTransaction> {
       initialDate: DateTime.now(),
       firstDate: DateTime(2021),
       lastDate: DateTime.now(),
-    ).then((pickedDate){
-      if(pickedDate==null){
+    ).then((pickedDate) {
+      if (pickedDate == null) {
         return null;
       }
       setState(() {
-        selectedDate =pickedDate;
+        selectedDate = pickedDate;
       });
-    } );
+    });
   }
 
   @override
@@ -75,13 +76,15 @@ class _NewTransactionState extends State<NewTransaction> {
               height: 70,
               child: Row(
                 children: [
-                  Text('No date Chosen!'),
+                  Expanded(
+                    child: Text(selectedDate == null
+                        ? 'No date Chosen!'
+                        : 'Picked date: ${DateFormat.yMd().format(selectedDate)}'
+                    ),
+                  ),
                   FlatButton(
                     onPressed: presentDatePicker,
-                    child: Text(
-                      selectedDate ==null ?
-                      "Choose date" :
-                      'Picked Date ${DateFormat.yMd().format(selectedDate)}',
+                    child: Text( 'Choose Date',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     textColor: Theme.of(context).primaryColor,
@@ -93,6 +96,7 @@ class _NewTransactionState extends State<NewTransaction> {
               onPressed: submitData,
               child: Text("Add Transaction"),
               textColor: Colors.purple,
+              color: Theme.of(context).textTheme.button.color,
             )
           ],
         ),
